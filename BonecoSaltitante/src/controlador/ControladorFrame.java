@@ -60,8 +60,8 @@ public class ControladorFrame implements ActionListener {
 	        frame.getBola().setBounds(150, posicaoY, 40, 40); // Atualiza a posição no frame
 	    }
 
-	    public static void main(String[] args) {
-	        Frame frame = new Frame();
-	    	new ControladorFrame(frame);
-	    }
+//	    public static void main(String[] args) {
+//	        Frame frame = new Frame();
+//	    	new ControladorFrame(frame);
+//	    }
 }
