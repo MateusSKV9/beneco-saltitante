@@ -61,7 +61,7 @@ public class Frame extends JFrame {
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.setBackground(new Color(0, 255, 128));
+			panel.setBackground(new Color(255, 68, 68));
 			panel.setBounds(64, 753, 457, 16);
 		}
 		return panel;
