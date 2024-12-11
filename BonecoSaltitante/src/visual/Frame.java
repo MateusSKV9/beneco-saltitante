@@ -18,7 +18,7 @@ public class Frame extends JFrame {
 	private JPanel panel;
 	
 	public Frame(){
-		setSize(600, 806);
+		setSize(600, 818);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
@@ -53,16 +53,16 @@ public class Frame extends JFrame {
 	public JLabel getBola() {
 		if (bola == null) {
 			bola = new JLabel("");
-			bola.setIcon(new ImageIcon(Frame.class.getResource("/assets/sprites-removebg-preview.png")));
-			bola.setBounds(83, 617, 420, 129);
+			bola.setIcon(new ImageIcon(Frame.class.getResource("/assets/sprite1.png")));
+			bola.setBounds(154, 640, 71, 127);
 		}
 		return bola;
 	}
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.setBackground(new Color(255, 68, 68));
-			panel.setBounds(64, 750, 457, 19);
+			panel.setBackground(new Color(0, 0, 0));
+			panel.setBounds(64, 767, 457, 15);
 		}
 		return panel;
 	}

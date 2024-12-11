@@ -1,28 +1,48 @@
 package controlador;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 import visual.Frame;
 
 public class ControladorFrame implements ActionListener {
 	 Frame frame;
 	    Timer timer;
-	    
+	    ImageIcon[] estados;
+	    int estadoAtual = 0;
+
 	    int posicaoY = 640;
 	    double velocidade = 0;
 	    double aceleracao = 10;
 	    double fatorRebote = 0.983;
-	    long tempoIntervalo = 10;
+	    long tempoIntervalo = 50;
 	    int limiteSuperior = 60;
 	    int count = 0;
 
-	    // PRECISA CORRIGIR A SUBIDA
-	    
 	    public ControladorFrame(Frame frame) {
 	        this.frame = frame;
+	        carregarEstados();
 	        addEventos();
+	    }
+
+	    private void carregarEstados() {
+	        // Carrega as imagens separadas para cada estado do boneco
+	        estados = new ImageIcon[] {
+	            new ImageIcon(getClass().getResource("/assets/sprite1.png")),
+	            new ImageIcon(getClass().getResource("/assets/sprite2.png")),
+	            new ImageIcon(getClass().getResource("/assets/sprite3.png")),
+	            new ImageIcon(getClass().getResource("/assets/sprite4.png")),
+	            new ImageIcon(getClass().getResource("/assets/sprite5.png")),
+	            new ImageIcon(getClass().getResource("/assets/sprite6.png"))
+	        };
 	    }
 
 	    public void addEventos() {
@@ -31,54 +51,73 @@ public class ControladorFrame implements ActionListener {
 
 	    public void actionPerformed(ActionEvent e) {
 	        if (e.getSource() == frame.getButtonLancar()) {
-	            iniciarSimulacao(); // Inicia a simulação quando o botão é pressionado
+	            iniciarSimulacao();
 	        }
 	    }
 
 	    private void iniciarSimulacao() {
-	        posicaoY = 640; // Posição inicial no solo
-	        velocidade = -5; // Velocidade inicial negativa para que a bola suba
-	        count = 0; // Reinicia o contador
+	        posicaoY = 640;
+	        velocidade = -5;
+	        count = 0;
 
 	        if (timer != null) {
-	            timer.cancel(); // Cancela qualquer timer anterior para evitar conflitos
+	            timer.cancel();
 	        }
 
 	        timer = new Timer();
 	        timer.scheduleAtFixedRate(new TimerTask() {
 	            public void run() {
-	                atualizarPosicao(); // Chama a função de atualização da posição
+	                atualizarEstado();
+	                atualizarPosicao();
 	            }
-	        }, 0, tempoIntervalo); // Intervalo definido para cada 10ms
+	        }, 0, tempoIntervalo);
+	    }
+
+	    private void atualizarEstado() {
+	        if (velocidade < 0) {
+	            // O boneco está subindo
+	            estadoAtual = 5;
+	        } else if (velocidade > 0) {
+	            // O boneco está descendo
+	            estadoAtual = (estadoAtual + 1) % estados.length;
+	        } else {
+	        	estadoAtual = 3;
+	        }
+
+	        // Quando o boneco aterrissa, ajusta para o estado inicial
+	        if (posicaoY >= 635) {
+	            estadoAtual = 0; // Assume que o estado inicial é a posição em pé
+	        }
+
+	        frame.getBola().setIcon(estados[estadoAtual]);
 	    }
 
 	    private void atualizarPosicao() {
-	        posicaoY -= (int) velocidade; // Atualiza a posição vertical com base na velocidade
-	        velocidade += (aceleracao * tempoIntervalo) / 1000; // Aplica a gravidade (aumenta a velocidade)
+	        posicaoY -= (int) velocidade;
+	        velocidade += (aceleracao * tempoIntervalo) / 1000;
 
-	        // Verifica se atingiu o limite superior
 	        if (posicaoY <= limiteSuperior) {
 	            posicaoY = limiteSuperior;
-	            velocidade = -velocidade * fatorRebote; // Inverte a direção com fator de rebote
+	            velocidade = -velocidade * fatorRebote;
 	        }
 
-	        // Verifica se voltou ao solo
 	        if (posicaoY >= 640) {
-	            posicaoY = 640; // Ajusta a posição para o solo
-	            if (count >= 1) { // Se já caiu uma vez, para a simulação
-	                velocidade = 0; // Zera a velocidade
-	                timer.cancel(); // Para a simulação
+	            posicaoY = 640;
+	            if (count >= 1) {
+	                velocidade = 0;
+	                timer.cancel();
 	            } else {
-	                count++; // Incrementa o contador para detectar a segunda vez
-	                velocidade = -velocidade * fatorRebote; // Aplica o rebote
+	                count++;
+	                velocidade = -velocidade * fatorRebote;
 	            }
 	        }
 
-	        frame.getBola().setBounds(154, posicaoY, 85, 125); // Atualiza a posição no frame
+	        // Atualiza a posição apenas do JLabel
+	        frame.getBola().setBounds(154, posicaoY, 85, 125);
 	    }
 
 	    public static void main(String[] args) {
 	        Frame frame = new Frame();
-	    	new ControladorFrame(frame);
+	        new ControladorFrame(frame);
 	    }
 }
