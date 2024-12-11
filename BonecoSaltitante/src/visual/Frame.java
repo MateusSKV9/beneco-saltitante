@@ -54,7 +54,7 @@ public class Frame extends JFrame {
 		if (bola == null) {
 			bola = new JLabel("");
 			bola.setIcon(new ImageIcon(Frame.class.getResource("/assets/sprite1.png")));
-			bola.setBounds(154, 640, 71, 127);
+			bola.setBounds(154, 635, 71, 127);
 		}
 		return bola;
 	}
@@ -62,7 +62,7 @@ public class Frame extends JFrame {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBackground(new Color(0, 0, 0));
-			panel.setBounds(64, 767, 457, 15);
+			panel.setBounds(64, 763, 457, 19);
 		}
 		return panel;
 	}
