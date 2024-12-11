@@ -12,8 +12,8 @@ public class Testes extends JPanel {
 	private BufferedImage spriteSheet;
     private int frameWidth = 128; // Largura de cada quadro
     private int frameHeight = 128; // Altura de cada quadro
-    private int currentFrame = 0; // Quadro atual
-    private int totalFrames = 100; // Total de quadros na spritesheet
+    private int currentFrame = 120; // Quadro atual
+    private int totalFrames = 160; // Total de quadros na spritesheet
     private Timer timer;
     private BufferedImage[] frames;
 
@@ -37,7 +37,7 @@ public class Testes extends JPanel {
         }
 
         // Timer para alternar quadros
-        timer = new Timer(250, e -> {
+        timer = new Timer(1000, e -> {
             currentFrame = (currentFrame + 1) % totalFrames; // Avança para o próximo quadro
             repaint(); // Atualiza o painel
         });
@@ -49,17 +49,17 @@ public class Testes extends JPanel {
         super.paintComponent(g);
         if (frames[currentFrame] != null) {
             // Desenha o quadro atual
-            g.drawImage(frames[currentFrame], 100, 100, null); // Desenha o quadro na posição (100, 100)
+            g.drawImage(frames[currentFrame], 150, 150, null); // Desenha o quadro na posição (100, 100)
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Sprite Animation");
-        Testes animation = new Testes();
-
-        frame.add(animation);
-        frame.setSize(400, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Sprite Animation");
+//        Testes animation = new Testes();
+//
+//        frame.add(animation);
+//        frame.setSize(400, 400);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setVisible(true);
+//    }
 }
