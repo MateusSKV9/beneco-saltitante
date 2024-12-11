@@ -18,12 +18,11 @@ public class ControladorFrame implements ActionListener {
 	    Timer timer;
 	    ImageIcon[] estados;
 	    int estadoAtual = 0;
-
 	    int posicaoY = 640;
 	    double velocidade = 0;
 	    double aceleracao = 10;
 	    double fatorRebote = 0.983;
-	    long tempoIntervalo = 50;
+	    long tempoIntervalo = 30;
 	    int limiteSuperior = 60;
 	    int count = 0;
 
@@ -80,6 +79,10 @@ public class ControladorFrame implements ActionListener {
 	        } else if (velocidade > 0) {
 	            // O boneco está descendo
 	            estadoAtual = (estadoAtual + 1) % estados.length;
+	            
+	            if(estadoAtual==0 || estadoAtual==1 || estadoAtual==8 || estadoAtual==9 || estadoAtual==10) {
+	            	return;
+	            }
 	        } else {
 	        	estadoAtual = 3;
 	        }
