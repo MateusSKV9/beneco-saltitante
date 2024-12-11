@@ -53,8 +53,8 @@ public class Frame extends JFrame {
 	public JLabel getBola() {
 		if (bola == null) {
 			bola = new JLabel("");
-			bola.setIcon(new ImageIcon(Frame.class.getResource("/assets/bola (1).png")));
-			bola.setBounds(154, 715, 32, 32);
+			bola.setIcon(new ImageIcon(Frame.class.getResource("/assets/sprites-removebg-preview.png")));
+			bola.setBounds(83, 617, 420, 129);
 		}
 		return bola;
 	}

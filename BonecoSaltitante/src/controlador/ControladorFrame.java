@@ -10,7 +10,7 @@ public class ControladorFrame implements ActionListener {
 	 Frame frame;
 	    Timer timer;
 	    
-	    int posicaoY = 715;
+	    int posicaoY = 640;
 	    double velocidade = 0;
 	    double aceleracao = 10;
 	    double fatorRebote = 0.983;
@@ -36,7 +36,7 @@ public class ControladorFrame implements ActionListener {
 	    }
 
 	    private void iniciarSimulacao() {
-	        posicaoY = 715; // Posição inicial no solo
+	        posicaoY = 640; // Posição inicial no solo
 	        velocidade = -5; // Velocidade inicial negativa para que a bola suba
 	        count = 0; // Reinicia o contador
 
@@ -63,8 +63,8 @@ public class ControladorFrame implements ActionListener {
 	        }
 
 	        // Verifica se voltou ao solo
-	        if (posicaoY >= 715) {
-	            posicaoY = 715; // Ajusta a posição para o solo
+	        if (posicaoY >= 640) {
+	            posicaoY = 640; // Ajusta a posição para o solo
 	            if (count >= 1) { // Se já caiu uma vez, para a simulação
 	                velocidade = 0; // Zera a velocidade
 	                timer.cancel(); // Para a simulação
@@ -74,7 +74,7 @@ public class ControladorFrame implements ActionListener {
 	            }
 	        }
 
-	        frame.getBola().setBounds(154, posicaoY, 40, 40); // Atualiza a posição no frame
+	        frame.getBola().setBounds(154, posicaoY, 85, 125); // Atualiza a posição no frame
 	    }
 
 	    public static void main(String[] args) {
