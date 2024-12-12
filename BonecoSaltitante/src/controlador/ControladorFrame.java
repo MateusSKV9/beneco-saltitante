@@ -21,8 +21,7 @@ public class ControladorFrame implements ActionListener {
 	    int posicaoY = 640;
 	    double velocidade = 0;
 	    double aceleracao = 10;
-	    double fatorRebote = 0.983;
-	    long tempoIntervalo = 30;
+	    long tempoIntervalo = 2;
 	    int limiteSuperior = 60;
 	    int count = 0;
 
@@ -33,7 +32,6 @@ public class ControladorFrame implements ActionListener {
 	    }
 
 	    private void carregarEstados() {
-	        // Carrega as imagens separadas para cada estado do boneco
 	        estados = new ImageIcon[] {
 	            new ImageIcon(getClass().getResource("/assets/sprite1.png")),
 	            new ImageIcon(getClass().getResource("/assets/sprite2.png")),
@@ -50,6 +48,7 @@ public class ControladorFrame implements ActionListener {
 
 	    public void actionPerformed(ActionEvent e) {
 	        if (e.getSource() == frame.getButtonLancar()) {
+	        	frame.getButtonLancar().setEnabled(false);
 	            iniciarSimulacao();
 	        }
 	    }
@@ -73,49 +72,49 @@ public class ControladorFrame implements ActionListener {
 	    }
 
 	    private void atualizarEstado() {
-	        if (velocidade < 0) {
-	            // O boneco está subindo
+	        if (velocidade > 0) {
+	            // Subida
 	            estadoAtual = 5;
-	        } else if (velocidade > 0) {
-	            // O boneco está descendo
+	        } else if (velocidade < 0) {
+	            // Descida
 	            estadoAtual = (estadoAtual + 1) % estados.length;
 	            
-	            if(estadoAtual==0 || estadoAtual==1 || estadoAtual==8 || estadoAtual==9 || estadoAtual==10) {
+	            // Ignora os estados 0 e 1 
+	            if(estadoAtual==0 || estadoAtual==1) {
 	            	return;
 	            }
 	        } else {
 	        	estadoAtual = 3;
 	        }
 
-	        // Quando o boneco aterrissa, ajusta para o estado inicial
+	        // Aterrissagem
 	        if (posicaoY >= 635) {
-	            estadoAtual = 0; // Assume que o estado inicial é a posição em pé
+	            estadoAtual = 0; 
 	        }
 
 	        frame.getBola().setIcon(estados[estadoAtual]);
 	    }
 
 	    private void atualizarPosicao() {
-	        posicaoY -= (int) velocidade;
+	        // Atualiza a posição vertical
+	        posicaoY += (int) velocidade;
+
+	        // Atualiza velocidade
 	        velocidade += (aceleracao * tempoIntervalo) / 1000;
 
+	        // Verifica se chegou ao topo
 	        if (posicaoY <= limiteSuperior) {
 	            posicaoY = limiteSuperior;
-	            velocidade = -velocidade * fatorRebote;
+	            velocidade *= -1; // Inverte a direção da velocidade
 	        }
 
 	        if (posicaoY >= 640) {
 	            posicaoY = 640;
-	            if (count >= 1) {
-	                velocidade = 0;
-	                timer.cancel();
-	            } else {
-	                count++;
-	                velocidade = -velocidade * fatorRebote;
-	            }
+	            velocidade = 0;
+	            timer.cancel();
+	            frame.getButtonLancar().setEnabled(true);
 	        }
 
-	        // Atualiza a posição apenas do JLabel
 	        frame.getBola().setBounds(154, posicaoY, 85, 125);
 	    }
 
