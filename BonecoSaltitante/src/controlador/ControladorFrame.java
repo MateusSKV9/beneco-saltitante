@@ -14,112 +14,110 @@ import javax.swing.ImageIcon;
 import visual.Frame;
 
 public class ControladorFrame implements ActionListener {
-	 Frame frame;
-	    Timer timer;
-	    ImageIcon[] estados;
-	    int estadoAtual = 0;
-	    int posicaoY = 640;
-	    double velocidade = 0;
-	    double aceleracao = 10;
-	    long tempoIntervalo = 2;
-	    int limiteSuperior = 60;
-	    int count = 0;
+	Frame frame;
+	Timer timer;
+	ImageIcon[] estados;
+	int estadoAtual = 0;
+	int posicaoY = 640;
+	double velocidade = 0;
+	double aceleracao = 10;
+	long tempoIntervalo = 2;
+	int limiteSuperior = 60;
+	int count = 0;
 
-	    public ControladorFrame(Frame frame) {
-	        this.frame = frame;
-	        carregarEstados();
-	        addEventos();
-	    }
+	public ControladorFrame(Frame frame) {
+		this.frame = frame;
+		carregarEstados();
+		addEventos();
+	}
 
-	    private void carregarEstados() {
-	        estados = new ImageIcon[] {
-	            new ImageIcon(getClass().getResource("/assets/sprite1.png")),
-	            new ImageIcon(getClass().getResource("/assets/sprite2.png")),
-	            new ImageIcon(getClass().getResource("/assets/sprite3.png")),
-	            new ImageIcon(getClass().getResource("/assets/sprite4.png")),
-	            new ImageIcon(getClass().getResource("/assets/sprite5.png")),
-	            new ImageIcon(getClass().getResource("/assets/sprite6.png"))
-	        };
-	    }
+	private void carregarEstados() {
+		estados = new ImageIcon[] { new ImageIcon(getClass().getResource("/assets/sprite1.png")),
+				new ImageIcon(getClass().getResource("/assets/sprite2.png")),
+				new ImageIcon(getClass().getResource("/assets/sprite3.png")),
+				new ImageIcon(getClass().getResource("/assets/sprite4.png")),
+				new ImageIcon(getClass().getResource("/assets/sprite5.png")),
+				new ImageIcon(getClass().getResource("/assets/sprite6.png")) };
+	}
 
-	    public void addEventos() {
-	        frame.getButtonLancar().addActionListener(this);
-	    }
+	public void addEventos() {
+		frame.getButtonLancar().addActionListener(this);
+	}
 
-	    public void actionPerformed(ActionEvent e) {
-	        if (e.getSource() == frame.getButtonLancar()) {
-	        	frame.getButtonLancar().setEnabled(false);
-	            iniciarSimulacao();
-	        }
-	    }
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == frame.getButtonLancar()) {
+			frame.getButtonLancar().setEnabled(false);
+			iniciarSimulacao();
+		}
+	}
 
-	    private void iniciarSimulacao() {
-	        posicaoY = 640;
-	        velocidade = -5;
-	        count = 0;
+	private void iniciarSimulacao() {
+		posicaoY = 640;
+		velocidade = -5;
+		count = 0;
 
-	        if (timer != null) {
-	            timer.cancel();
-	        }
+		if (timer != null) {
+			timer.cancel();
+		}
 
-	        timer = new Timer();
-	        timer.scheduleAtFixedRate(new TimerTask() {
-	            public void run() {
-	                atualizarEstado();
-	                atualizarPosicao();
-	            }
-	        }, 0, tempoIntervalo);
-	    }
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				atualizarEstado();
+				atualizarPosicao();
+			}
+		}, 0, tempoIntervalo);
+	}
 
-	    private void atualizarEstado() {
-	        if (velocidade > 0) {
-	            // Subida
-	            estadoAtual = 5;
-	        } else if (velocidade < 0) {
-	            // Descida
-	            estadoAtual = (estadoAtual + 1) % estados.length;
-	            
-	            // Ignora os estados 0 e 1 
-	            if(estadoAtual==0 || estadoAtual==1) {
-	            	return;
-	            }
-	        } else {
-	        	estadoAtual = 3;
-	        }
+	private void atualizarEstado() {
+		if (velocidade > 0) {
+			// Subida
+			estadoAtual = 5;
+		} else if (velocidade < 0) {
+			// Descida
+			estadoAtual = (estadoAtual + 1) % estados.length;
 
-	        // Aterrissagem
-	        if (posicaoY >= 635) {
-	            estadoAtual = 0; 
-	        }
+			// Ignora os estados 0 e 1
+			if (estadoAtual == 0 || estadoAtual == 1) {
+				return;
+			}
+		} else {
+			estadoAtual = 3;
+		}
 
-	        frame.getBola().setIcon(estados[estadoAtual]);
-	    }
+		// Aterrissagem
+		if (posicaoY >= 635) {
+			estadoAtual = 0;
+		}
 
-	    private void atualizarPosicao() {
-	        // Atualiza a posição vertical
-	        posicaoY += (int) velocidade;
+		frame.getBola().setIcon(estados[estadoAtual]);
+	}
 
-	        // Atualiza velocidade
-	        velocidade += (aceleracao * tempoIntervalo) / 1000;
+	private void atualizarPosicao() {
+		// Atualiza a posição vertical
+		posicaoY += (int) velocidade;
 
-	        // Verifica se chegou ao topo
-	        if (posicaoY <= limiteSuperior) {
-	            posicaoY = limiteSuperior;
-	            velocidade *= -1; // Inverte a direção da velocidade
-	        }
+		// Atualiza velocidade
+		velocidade += (aceleracao * tempoIntervalo) / 1000;
 
-	        if (posicaoY >= 640) {
-	            posicaoY = 640;
-	            velocidade = 0;
-	            timer.cancel();
-	            frame.getButtonLancar().setEnabled(true);
-	        }
+		// Verifica se chegou ao topo
+		if (posicaoY <= limiteSuperior) {
+			posicaoY = limiteSuperior;
+			velocidade *= -1; // Inverte a direção da velocidade
+		}
 
-	        frame.getBola().setBounds(154, posicaoY, 85, 125);
-	    }
+		if (posicaoY >= 640) {
+			posicaoY = 640;
+			velocidade = 0;
+			timer.cancel();
+			frame.getButtonLancar().setEnabled(true);
+		}
 
-	    public static void main(String[] args) {
-	        Frame frame = new Frame();
-	        new ControladorFrame(frame);
-	    }
+		frame.getBola().setBounds(154, posicaoY, 85, 125);
+	}
+
+	public static void main(String[] args) {
+		Frame frame = new Frame();
+		new ControladorFrame(frame);
+	}
 }
